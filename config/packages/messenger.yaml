@@ -16,11 +16,15 @@ framework:
 
         buses:
             messenger.bus.default: []
+            command.bus: []
+            query.bus: []
+            event.bus:
+                default_middleware: allow_no_handlers
 
         routing:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
 
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+            # Domain events (CQRS event bus) are processed asynchronously by the messenger-worker container
+            App\Auth\Domain\Event\DomainEvent: async

@@ -21,3 +21,39 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # Auth bounded context: bind Domain/Application ports to their Infrastructure adapters
+    App\Auth\Domain\Repository\UserRepository:
+        alias: App\Auth\Infrastructure\Persistence\Doctrine\DoctrineUserRepository
+
+    App\Auth\Domain\Repository\PasswordResetTokenRepository:
+        alias: App\Auth\Infrastructure\Persistence\Doctrine\DoctrinePasswordResetTokenRepository
+
+    App\Auth\Domain\Service\PasswordHasher:
+        alias: App\Auth\Infrastructure\Security\PasswordHasherAdapter
+
+    App\Auth\Domain\Service\TokenGenerator:
+        alias: App\Auth\Infrastructure\Security\TokenGeneratorAdapter
+
+    App\Auth\Application\Command\CommandBus:
+        alias: App\Auth\Infrastructure\Messenger\CommandBusAdapter
+
+    App\Auth\Application\Query\QueryBus:
+        alias: App\Auth\Infrastructure\Messenger\QueryBusAdapter
+
+    App\Auth\Application\Port\EventPublisher:
+        alias: App\Auth\Infrastructure\Messenger\EventPublisherAdapter
+
+    # Application command/query handlers are plain PHP classes (no Symfony attributes,
+    # to keep the Application layer framework-agnostic) — wire them to their bus here.
+    App\Auth\Application\Command\RegisterUser\RegisterUserHandler:
+        tags: [{ name: messenger.message_handler, bus: command.bus }]
+
+    App\Auth\Application\Command\RequestPasswordReset\RequestPasswordResetHandler:
+        tags: [{ name: messenger.message_handler, bus: command.bus }]
+
+    App\Auth\Application\Command\ResetPassword\ResetPasswordHandler:
+        tags: [{ name: messenger.message_handler, bus: command.bus }]
+
+    App\Auth\Application\Query\GetUserByValidResetToken\GetUserByValidResetTokenHandler:
+        tags: [{ name: messenger.message_handler, bus: query.bus }]

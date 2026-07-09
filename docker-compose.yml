@@ -34,5 +34,16 @@ services:
     ports:
       - "8026:8025"
 
+  messenger-worker:
+    build:
+      context: ./docker/php
+    volumes:
+      - ./:/var/www/html
+    command: php bin/console messenger:consume async -vv --time-limit=3600
+    restart: unless-stopped
+    depends_on:
+      - db
+      - mailpit
+
 volumes:
   db_data:
