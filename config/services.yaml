@@ -55,5 +55,8 @@ services:
     App\Auth\Application\Command\ResetPassword\ResetPasswordHandler:
         tags: [{ name: messenger.message_handler, bus: command.bus }]
 
+    App\Auth\Application\Command\UpdateProfile\UpdateProfileHandler:
+        tags: [{ name: messenger.message_handler, bus: command.bus }]
+
     App\Auth\Application\Query\GetUserByValidResetToken\GetUserByValidResetTokenHandler:
         tags: [{ name: messenger.message_handler, bus: query.bus }]

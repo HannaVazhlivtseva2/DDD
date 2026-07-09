@@ -19,6 +19,16 @@ final readonly class SecurityUser implements UserInterface, PasswordAuthenticate
         return $this->domainUser;
     }
 
+    public function getId(): string
+    {
+        return $this->domainUser->id()->toString();
+    }
+
+    public function getEmail(): string
+    {
+        return $this->domainUser->email()->toString();
+    }
+
     public function getRoles(): array
     {
         return $this->domainUser->roles();

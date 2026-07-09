@@ -6,6 +6,7 @@ namespace App\Auth\Domain\Model;
 
 use App\Auth\Domain\AggregateRoot;
 use App\Auth\Domain\Event\PasswordWasReset;
+use App\Auth\Domain\Event\ProfileWasUpdated;
 use App\Auth\Domain\Event\UserLoggedIn;
 use App\Auth\Domain\Event\UserRegistered;
 use Doctrine\ORM\Mapping as ORM;
@@ -86,6 +87,15 @@ final class User
     {
         $this->password = $newPassword;
         $this->recordEvent(new PasswordWasReset($this->id->toString(), $this->email->toString()));
+    }
+
+    public function updateProfile(string $firstName, string $lastName, PhoneNumber $phone, Gender $gender): void
+    {
+        $this->firstName = self::requireNonBlank($firstName, 'First name');
+        $this->lastName = self::requireNonBlank($lastName, 'Last name');
+        $this->phone = $phone;
+        $this->gender = $gender;
+        $this->recordEvent(new ProfileWasUpdated($this->id->toString()));
     }
 
     public function recordLogin(): void

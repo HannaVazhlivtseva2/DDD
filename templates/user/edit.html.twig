@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile Edit{% endblock %}
+
+{% block nav %}
+    <nav class="navbar navbar-expand navbar-light bg-white border-bottom">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">DDD</span>
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-secondary"><a href="{{ path('edit_user') }}">{{ user.email }}</a></span>
+                <a href="{{ path('app_logout') }}" class="btn btn-outline-secondary btn-sm">Log out</a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block body %}
+    <h1 class="h4 mb-3">Profile edit</h1>
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-6">{{ form_row(form.firstName) }}</div>
+        <div class="col-6">{{ form_row(form.lastName) }}</div>
+    </div>
+    {{ form_row(form.phone) }}
+    {{ form_row(form.gender) }}
+    <button type="submit" class="btn btn-primary w-100">Update</button>
+    {{ form_end(form) }}
+{% endblock %}
