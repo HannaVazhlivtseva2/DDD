@@ -12,14 +12,17 @@ docker compose up -d --build
 - Mailpit (mail web UI): http://localhost:8026
 - MariaDB: localhost:3306 (credentials in `.env.local`)
 
-Run migrations and create a user to log in with:
+Run migrations, then either register at http://localhost:8080/register or create a user from the CLI:
 
 ```bash
 docker compose exec php bin/console doctrine:migrations:migrate --no-interaction
-docker compose exec php bin/console app:user:create you@example.com "YourPassword123"
+docker compose exec php bin/console app:user:create you@example.com "YourPassw0rd!" Your Name "+15551234567" male
 ```
 
-Every route except `/login`, `/forgot-password` and `/reset-password` requires being logged in.
+Passwords must be at least 8 characters and include an uppercase letter, a lowercase letter, a digit, and a symbol.
+Gender accepts `male`, `female`, or `other`.
+
+Every route except `/login`, `/register`, `/forgot-password` and `/reset-password` requires being logged in.
 Password reset emails are sent asynchronously by the `messenger-worker` container — check Mailpit to see them.
 
 ## Architecture

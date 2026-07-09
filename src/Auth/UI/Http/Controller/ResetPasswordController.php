@@ -10,9 +10,11 @@ use App\Auth\Application\Query\GetUserByValidResetToken\GetUserByValidResetToken
 use App\Auth\Application\Query\GetUserByValidResetToken\ResetTokenView;
 use App\Auth\Application\Query\QueryBus;
 use App\Auth\Domain\Exception\InvalidOrExpiredResetToken;
+use App\Auth\Domain\Exception\WeakPassword;
 use App\Auth\UI\Http\Form\Model\ResetPasswordFormModel;
 use App\Auth\UI\Http\Form\ResetPasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -42,13 +44,15 @@ final class ResetPasswordController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->commandBus->dispatch(new ResetPasswordCommand($token, $formModel->plainPassword));
+
+                $this->addFlash('success', 'Your password has been reset. You can now log in.');
+
+                return $this->redirectToRoute('app_login');
             } catch (InvalidOrExpiredResetToken) {
                 return $this->render('auth/reset_password.html.twig', ['valid' => false, 'form' => null]);
+            } catch (WeakPassword $exception) {
+                $form->get('plainPassword')->addError(new FormError($exception->getMessage()));
             }
-
-            $this->addFlash('success', 'Your password has been reset. You can now log in.');
-
-            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('auth/reset_password.html.twig', [
