@@ -10,8 +10,8 @@
     <h1 class="h4 mb-3">Profile edit</h1>
 
     <div class="d-flex align-items-center gap-3 mb-4">
-        {% if user.domainUser.avatarFilename %}
-            <img src="/uploads/avatars/{{ user.domainUser.avatarFilename }}?v={{ random() }}" alt="Avatar" class="rounded-circle" width="80" height="80" style="object-fit: cover;">
+        {% if avatarUrl %}
+            <img src="{{ avatarUrl }}?v={{ random() }}" alt="Avatar" class="rounded-circle" width="80" height="80" style="object-fit: cover;">
         {% else %}
             <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
                 <span class="text-secondary">No photo</span>

@@ -6,10 +6,6 @@ namespace App\Auth\Domain\Model;
 
 use App\Auth\Domain\Exception\WeakPassword;
 
-/**
- * A plain-text password that has passed the domain's complexity policy.
- * Holds the raw value only transiently, until it's hashed — never persisted.
- */
 final readonly class PlainPassword
 {
     private const int MIN_LENGTH = 8;

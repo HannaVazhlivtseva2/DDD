@@ -18,6 +18,11 @@ RUN { \
         echo 'opcache.validate_timestamps=1'; \
     } > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
+RUN { \
+        echo 'upload_max_filesize=10M'; \
+        echo 'post_max_size=10M'; \
+    } > /usr/local/etc/php/conf.d/uploads.ini
+
 WORKDIR /var/www/html
 
 CMD ["php-fpm"]

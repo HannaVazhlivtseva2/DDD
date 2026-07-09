@@ -30,7 +30,6 @@ final readonly class RequestPasswordResetHandler
         $user = $this->users->findByEmail($email);
 
         if (null === $user) {
-            // Do not reveal whether the email is registered.
             return;
         }
 

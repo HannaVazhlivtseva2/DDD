@@ -48,9 +48,21 @@ final class ProfileController extends AbstractController
             return $this->redirectToRoute('edit_user');
         }
 
+        $avatarFilename = $user->domainUser()->avatarFilename();
+        $avatarUrl = null;
+
+        if (null !== $avatarFilename) {
+            if ($this->avatarStorage->exists($avatarFilename)) {
+                $avatarUrl = $this->avatarStorage->publicUrl($avatarFilename);
+            } else {
+                $this->addFlash('error', 'Your avatar file is missing from storage — please upload it again.');
+            }
+        }
+
         return $this->render('user/edit.html.twig', [
             'form' => $form,
             'avatarForm' => $this->createForm(AvatarUploadType::class, new AvatarUploadFormModel()),
+            'avatarUrl' => $avatarUrl,
             'user' => $user,
         ]);
     }

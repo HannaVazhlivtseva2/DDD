@@ -8,11 +8,11 @@ use App\Auth\Domain\Model\UserId;
 
 interface AvatarStorage
 {
-    /**
-     * Stores the given raw file content as the user's avatar, replacing any
-     * previous one, and returns the stored filename.
-     */
     public function store(UserId $userId, string $content, string $extension): string;
 
     public function delete(string $filename): void;
+
+    public function publicUrl(string $filename): string;
+
+    public function exists(string $filename): bool;
 }

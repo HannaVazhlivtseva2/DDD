@@ -45,4 +45,14 @@ final readonly class LocalFilesystemAvatarStorage implements AvatarStorage
     {
         $this->filesystem->remove($this->uploadDir.'/'.basename($filename));
     }
+
+    public function publicUrl(string $filename): string
+    {
+        return '/uploads/avatars/'.basename($filename);
+    }
+
+    public function exists(string $filename): bool
+    {
+        return $this->filesystem->exists($this->uploadDir.'/'.basename($filename));
+    }
 }

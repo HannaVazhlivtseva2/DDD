@@ -35,8 +35,18 @@ services:
     App\Auth\Domain\Service\TokenGenerator:
         alias: App\Auth\Infrastructure\Security\TokenGeneratorAdapter
 
+    Aws\S3\S3Client:
+        factory: ['App\Auth\Infrastructure\Storage\S3ClientFactory', 'create']
+        arguments:
+            $region: '%env(AWS_S3_REGION)%'
+            $accessKey: '%env(AWS_ACCESS_KEY_ID)%'
+            $secretKey: '%env(AWS_SECRET_ACCESS_KEY)%'
+            $endpoint: '%env(AWS_S3_ENDPOINT)%'
+
     App\Auth\Domain\Service\AvatarStorage:
-        alias: App\Auth\Infrastructure\Storage\LocalFilesystemAvatarStorage
+        factory: ['App\Auth\Infrastructure\Storage\AvatarStorageFactory', 'create']
+        arguments:
+            $driver: '%env(AVATAR_STORAGE_DRIVER)%'
 
     App\Auth\Application\Command\CommandBus:
         alias: App\Auth\Infrastructure\Messenger\CommandBusAdapter
@@ -47,8 +57,6 @@ services:
     App\Auth\Application\Port\EventPublisher:
         alias: App\Auth\Infrastructure\Messenger\EventPublisherAdapter
 
-    # Application command/query handlers are plain PHP classes (no Symfony attributes,
-    # to keep the Application layer framework-agnostic) — wire them to their bus here.
     App\Auth\Application\Command\RegisterUser\RegisterUserHandler:
         tags: [{ name: messenger.message_handler, bus: command.bus }]
 
