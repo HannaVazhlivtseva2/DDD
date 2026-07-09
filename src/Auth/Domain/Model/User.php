@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Domain\Model;
 
 use App\Auth\Domain\AggregateRoot;
+use App\Auth\Domain\Event\AvatarWasUpdated;
 use App\Auth\Domain\Event\PasswordWasReset;
 use App\Auth\Domain\Event\ProfileWasUpdated;
 use App\Auth\Domain\Event\UserLoggedIn;
@@ -38,6 +39,9 @@ final class User
 
     #[ORM\Column(type: 'string', length: 10, enumType: Gender::class)]
     private Gender $gender;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $avatarFilename = null;
 
     /** @var list<string> */
     #[ORM\Column(type: 'json')]
@@ -98,6 +102,12 @@ final class User
         $this->recordEvent(new ProfileWasUpdated($this->id->toString()));
     }
 
+    public function changeAvatar(string $filename): void
+    {
+        $this->avatarFilename = $filename;
+        $this->recordEvent(new AvatarWasUpdated($this->id->toString(), $filename));
+    }
+
     public function recordLogin(): void
     {
         $this->recordEvent(new UserLoggedIn($this->id->toString(), $this->email->toString()));
@@ -136,6 +146,11 @@ final class User
     public function gender(): Gender
     {
         return $this->gender;
+    }
+
+    public function avatarFilename(): ?string
+    {
+        return $this->avatarFilename;
     }
 
     /** @return list<string> */

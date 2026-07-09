@@ -16,7 +16,7 @@ final class HomeController extends AbstractController
     public function __invoke(#[CurrentUser] ?UserInterface $user): Response
     {
         return $this->render('home.html.twig', [
-            'email' => $user?->getUserIdentifier(),
+            'user' => $user,
         ]);
     }
 }

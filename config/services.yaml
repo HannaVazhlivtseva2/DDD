@@ -35,6 +35,9 @@ services:
     App\Auth\Domain\Service\TokenGenerator:
         alias: App\Auth\Infrastructure\Security\TokenGeneratorAdapter
 
+    App\Auth\Domain\Service\AvatarStorage:
+        alias: App\Auth\Infrastructure\Storage\LocalFilesystemAvatarStorage
+
     App\Auth\Application\Command\CommandBus:
         alias: App\Auth\Infrastructure\Messenger\CommandBusAdapter
 
@@ -56,6 +59,9 @@ services:
         tags: [{ name: messenger.message_handler, bus: command.bus }]
 
     App\Auth\Application\Command\UpdateProfile\UpdateProfileHandler:
+        tags: [{ name: messenger.message_handler, bus: command.bus }]
+
+    App\Auth\Application\Command\UpdateAvatar\UpdateAvatarHandler:
         tags: [{ name: messenger.message_handler, bus: command.bus }]
 
     App\Auth\Application\Query\GetUserByValidResetToken\GetUserByValidResetTokenHandler:
