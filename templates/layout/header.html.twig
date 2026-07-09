@@ -1,6 +1,8 @@
 <nav class="navbar navbar-expand navbar-light bg-white border-bottom">
     <div class="container">
-        <span class="navbar-brand mb-0 h1"><a href="{{ path('app_home') }}">DDD</a></span>
+        <a href="{{ path('app_home') }}" class="navbar-brand mb-0 d-flex align-items-center">
+            <img src="{{ asset('images/logo.svg') }}" alt="DDD" width="36" height="36">
+        </a>
         <div class="d-flex align-items-center gap-3">
             <span class="text-secondary"><a href="{{ path('edit_user') }}">{{ user.email }}</a></span>
             <a href="{{ path('app_logout') }}" class="btn btn-outline-secondary btn-sm">Log out</a>

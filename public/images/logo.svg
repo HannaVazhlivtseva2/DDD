@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-labelledby="ddd-logo-title">
+  <title id="ddd-logo-title">DDD logo</title>
+  <polygon points="120,20 206.6,70 206.6,170 120,220 33.4,170 33.4,70" fill="#534AB7"/>
+  <polygon points="120,48 182.4,84 182.4,156 120,192 57.6,156 57.6,84" fill="none" stroke="#AFA9EC" stroke-width="2" opacity="0.55"/>
+</svg>
